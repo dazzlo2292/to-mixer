@@ -19,27 +19,28 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    @GetMapping("/api/v1/brands")
+    @GetMapping("/api/v1/public/brands")
     public List<BrandDto> getAll() {
-        logger.info("Method called - GET /api/v1/brands");
+        logger.info("Method called - GET /api/v1/public/brands");
         return brandService.findAll();
     }
 
-    @GetMapping("/api/v1/brands/{id}")
+    @GetMapping("/api/v1/public/brands/{id}")
     public BrandDto findById(@PathVariable Long id) {
-        logger.info("Method called - GET /api/v1/brands/ with params: {}", id);
-        return brandService.findById(id).orElseThrow(() -> new EntityNotFoundException("Brand not found!"));
+        logger.info("Method called - GET /api/v1/public/brands/ with params: {}", id);
+        return brandService.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Brand with id %d not found".formatted(id)));
     }
 
-    @PostMapping("/api/v1/brands")
+    @PostMapping("/api/v1/admin/brands")
     public Brand save(@RequestBody BrandDto brand) {
-        logger.info("Method called - POST /api/v1/brands with param:{}", brand.toDomainObject());
+        logger.info("Method called - POST /api/v1/admin/brands with param:{}", brand.toDomainObject());
         return brandService.save(brand.toDomainObject());
     }
 
-    @DeleteMapping("/api/v1/brands/{id}")
+    @DeleteMapping("/api/v1/admin/brands/{id}")
     public void delete(@PathVariable Long id) {
-        logger.info("Method called - DELETE /api/v1/brands with param:{}", id);
+        logger.info("Method called - DELETE /api/v1/admin/brands with param:{}", id);
         brandService.deleteById(id);
     }
 }

@@ -19,10 +19,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ModelAndView handeAccessDeniedException(AccessDeniedException ex) {
-        return new ModelAndView("error",
-                "errorText", "Access denied!");
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorDto> handeValidationException(ValidationException ex) {
+        ErrorDto response = new ErrorDto("validation-error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(Exception.class)

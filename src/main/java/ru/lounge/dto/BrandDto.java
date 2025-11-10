@@ -10,13 +10,13 @@ public class BrandDto {
 
     private long id;
 
-    private String title;
+    private String name;
 
     public Brand toDomainObject() {
-        return new Brand(id, title);
+        return new Brand(id, name);
     }
 
     public static BrandDto fromDomainObject(Brand brand) {
-        return new BrandDto(brand.getId(), brand.getTitle());
+        return new BrandDto(brand.getId(), brand.getName());
     }
 }
