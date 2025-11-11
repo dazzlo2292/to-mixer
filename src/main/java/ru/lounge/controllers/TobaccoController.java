@@ -19,7 +19,7 @@ public class TobaccoController {
     private final TobaccoService tobaccoService;
 
     @GetMapping("/api/v1/public/tobaccos")
-    public List<TobaccoDto> getAll() {
+    public List<TobaccoDto> findAll() {
         logger.info("Method called - GET /api/v1/public/tobaccos");
         return tobaccoService.findAll();
     }
@@ -44,8 +44,8 @@ public class TobaccoController {
 
     @PostMapping("/api/v1/admin/tobaccos")
     public Tobacco save(@RequestBody TobaccoDto tobacco) {
-        logger.info("Method called - POST /api/v1/admin/tobaccos with param:{}", tobacco.toDomainObject());
-        return tobaccoService.save(tobacco.toDomainObject());
+        logger.info("Method called - POST /api/v1/admin/tobaccos with param:{}", tobacco);
+        return tobaccoService.save(tobacco);
     }
 
     @DeleteMapping("/api/v1/admin/tobaccos/{id}")

@@ -12,8 +12,8 @@ public class BrandDto {
 
     private String name;
 
-    public Brand toDomainObject() {
-        return new Brand(id, name);
+    public Brand toDomainObject(char isDeleted) {
+        return new Brand(id, name, isDeleted);
     }
 
     public static BrandDto fromDomainObject(Brand brand) {

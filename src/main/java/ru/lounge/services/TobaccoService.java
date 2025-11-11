@@ -16,7 +16,7 @@ public interface TobaccoService {
 
     List<TobaccoDto> searchByName(String name);
 
-    Tobacco save(Tobacco tobacco);
+    Tobacco save(TobaccoDto tobacco);
 
     void deleteById(long id);
 }

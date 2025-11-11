@@ -15,6 +15,7 @@ create table users (
 create table brands (
     id bigserial,
     name varchar(30),
+    delete_fl varchar(1) default 'N',
     primary key (id)
 );
 
@@ -24,5 +25,19 @@ create table tobaccos (
     description varchar(100),
     brand_id bigserial references brands (id) on delete cascade,
     strength int,
-    base_fl varchar(1) default 'N'
+    base_fl varchar(1) default 'N',
+    delete_fl varchar(1) default 'N',
+    primary key (id)
+);
+
+create table mixes (
+    id bigserial,
+    name varchar(100),
+    primary key (id)
+);
+
+create table mixes_tobaccos (
+    mix_id bigserial,
+    tobacco_id bigserial,
+    primary key (mix_id, tobacco_id)
 );

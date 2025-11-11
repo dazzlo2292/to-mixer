@@ -25,9 +25,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ModelAndView handeNullPointerException(Exception ex) {
-        return new ModelAndView("error",
-                "errorText", "Something went wrong...");
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorDto> handeNullPointerException(Exception ex) {
+//        ErrorDto response = new ErrorDto("server-error", ex.getMessage());
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//    }
 }

@@ -28,6 +28,10 @@ spring:
     rest:
       basePath: /datarest
 
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
 management:
   endpoints:
     web:

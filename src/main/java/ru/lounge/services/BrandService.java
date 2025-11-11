@@ -11,7 +11,7 @@ public interface BrandService {
 
     List<BrandDto> findAll();
 
-    Brand save(Brand brand);
+    Brand save(BrandDto brand);
 
     void deleteById(long id);
 }

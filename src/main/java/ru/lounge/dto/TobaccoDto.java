@@ -5,6 +5,8 @@ import lombok.Data;
 import ru.lounge.models.Brand;
 import ru.lounge.models.Tobacco;
 
+import java.util.ArrayList;
+
 @Data
 @AllArgsConstructor
 public class TobaccoDto {
@@ -21,7 +23,7 @@ public class TobaccoDto {
     private char isBase;
 
     public Tobacco toDomainObject() {
-        return new Tobacco(id, name, description, brand, strength, isBase);
+        return new Tobacco(id, name, description, brand, strength, isBase, 'N', new ArrayList<>());
     }
 
     public static TobaccoDto fromDomainObject(Tobacco tobacco) {

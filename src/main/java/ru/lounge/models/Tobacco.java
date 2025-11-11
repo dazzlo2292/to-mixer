@@ -3,13 +3,21 @@ package ru.lounge.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "tobaccos")
-@NamedEntityGraph(name = "tobacco-brand-entity-graph",
-        attributeNodes = {@NamedAttributeNode("brand")})
+@NamedEntityGraph(
+        name = "tobacco-brand-mixes-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("brand"),
+                @NamedAttributeNode("mixes")
+        }
+)
 public class Tobacco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +40,10 @@ public class Tobacco {
 
     @Column(name = "base_fl")
     private char isBase;
+
+    @Column(name = "delete_fl")
+    private char isDeleted;
+
+    @ManyToMany(mappedBy = "tobaccos", fetch = FetchType.LAZY)
+    private List<Mix> mixes = new ArrayList<>();
 }

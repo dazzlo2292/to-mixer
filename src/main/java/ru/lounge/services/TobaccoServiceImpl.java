@@ -28,6 +28,7 @@ public class TobaccoServiceImpl implements TobaccoService {
                 .map(TobaccoDto::fromDomainObject);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<TobaccoDto> findByBrandId(long id) {
         return tobaccoRepository.findByBrandId(id)
@@ -36,6 +37,7 @@ public class TobaccoServiceImpl implements TobaccoService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<TobaccoDto> searchByName(String name) {
         List<Tobacco> allTobaccos = tobaccoRepository.findAll();
@@ -50,6 +52,7 @@ public class TobaccoServiceImpl implements TobaccoService {
         return resultTobaccos;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<TobaccoDto> findAll() {
         return tobaccoRepository.findAll()
@@ -58,8 +61,9 @@ public class TobaccoServiceImpl implements TobaccoService {
                 .toList();
     }
 
+    @Transactional
     @Override
-    public Tobacco save(Tobacco tobacco) {
+    public Tobacco save(TobaccoDto tobacco) {
         var brandId = tobacco.getBrand().getId();
         var brand = brandRepository.findById(tobacco.getBrand().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Brand with id %d not found".formatted(brandId)));
@@ -68,9 +72,10 @@ public class TobaccoServiceImpl implements TobaccoService {
             throw new ValidationException("The strength of tobacco should be from 1 to 10");
         }
 
-        return tobaccoRepository.save(tobacco);
+        return tobaccoRepository.save(tobacco.toDomainObject());
     }
 
+    @Transactional
     @Override
     public void deleteById(long id) {
         tobaccoRepository.deleteById(id);

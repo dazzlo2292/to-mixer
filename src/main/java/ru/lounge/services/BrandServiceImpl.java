@@ -22,6 +22,7 @@ public class BrandServiceImpl implements BrandService{
                 .map(BrandDto::fromDomainObject);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<BrandDto> findAll() {
         return brandRepository.findAll()
@@ -30,11 +31,13 @@ public class BrandServiceImpl implements BrandService{
                 .toList();
     }
 
+    @Transactional
     @Override
-    public Brand save(Brand brand) {
-        return brandRepository.save(brand);
+    public Brand save(BrandDto brand) {
+        return brandRepository.save(brand.toDomainObject('N'));
     }
 
+    @Transactional
     @Override
     public void deleteById(long id) {
         brandRepository.deleteById(id);

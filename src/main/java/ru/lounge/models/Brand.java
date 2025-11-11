@@ -17,4 +17,7 @@ public class Brand {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @Column(name = "delete_fl")
+    private char isDeleted;
 }

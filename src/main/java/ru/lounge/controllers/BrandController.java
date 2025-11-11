@@ -20,7 +20,7 @@ public class BrandController {
     private final BrandService brandService;
 
     @GetMapping("/api/v1/public/brands")
-    public List<BrandDto> getAll() {
+    public List<BrandDto> findAll() {
         logger.info("Method called - GET /api/v1/public/brands");
         return brandService.findAll();
     }
@@ -34,8 +34,8 @@ public class BrandController {
 
     @PostMapping("/api/v1/admin/brands")
     public Brand save(@RequestBody BrandDto brand) {
-        logger.info("Method called - POST /api/v1/admin/brands with param:{}", brand.toDomainObject());
-        return brandService.save(brand.toDomainObject());
+        logger.info("Method called - POST /api/v1/admin/brands with param:{}", brand);
+        return brandService.save(brand);
     }
 
     @DeleteMapping("/api/v1/admin/brands/{id}")
