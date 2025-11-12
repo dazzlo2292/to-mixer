@@ -6,8 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.lounge.dto.TobaccoDto;
 import ru.lounge.exceptions.EntityNotFoundException;
 import ru.lounge.exceptions.ValidationException;
+import ru.lounge.models.Brand;
+import ru.lounge.models.Mix;
 import ru.lounge.models.Tobacco;
 import ru.lounge.repositories.BrandRepository;
+import ru.lounge.repositories.MixRepository;
 import ru.lounge.repositories.TobaccoRepository;
 
 import java.util.ArrayList;
@@ -20,6 +23,10 @@ public class TobaccoServiceImpl implements TobaccoService {
     private final TobaccoRepository tobaccoRepository;
 
     private final BrandRepository brandRepository;
+
+    private final MixRepository mixRepository;
+
+    private final MixService mixService;
 
     @Transactional(readOnly = true)
     @Override
@@ -72,12 +79,35 @@ public class TobaccoServiceImpl implements TobaccoService {
             throw new ValidationException("The strength of tobacco should be from 1 to 10");
         }
 
-        return tobaccoRepository.save(tobacco.toDomainObject());
+        return tobaccoRepository.save(convertTobaccoDtoToDomain(tobacco));
     }
 
     @Transactional
     @Override
     public void deleteById(long id) {
+        List<Mix> mixesWithTobacco = mixRepository.findByTobaccoId(id);
+
+        for (Mix m : mixesWithTobacco) {
+            mixService.deleteById(m.getId());
+        }
+
         tobaccoRepository.deleteById(id);
+    }
+
+    private Tobacco convertTobaccoDtoToDomain(TobaccoDto tobaccoDto) {
+        List<Mix> mixes = mixRepository.findByTobaccoId(tobaccoDto.getId());
+
+        Brand brand = brandRepository.findById(tobaccoDto.getBrand().getId()).get();
+
+        return new Tobacco(
+                tobaccoDto.getId(),
+                tobaccoDto.getName(),
+                tobaccoDto.getDescription(),
+                brand,
+                tobaccoDto.getStrength(),
+                tobaccoDto.getIsBase(),
+                'N',
+                mixes
+        );
     }
 }

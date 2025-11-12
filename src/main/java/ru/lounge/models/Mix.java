@@ -14,9 +14,17 @@ import java.util.List;
 @Entity
 @Table(name = "mixes")
 @NamedEntityGraph(
-        name = "mixes-tobacco-entity-graph",
+        name = "mixes.with-tobaccos-and-brand",
         attributeNodes = {
-                @NamedAttributeNode("tobaccos")
+                @NamedAttributeNode(value = "tobaccos", subgraph = "tobacco.with-brand")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "tobacco.with-brand",
+                        attributeNodes = {
+                                @NamedAttributeNode("brand")
+                        }
+                )
         }
 )
 public class Mix {
@@ -26,6 +34,9 @@ public class Mix {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @Column(name = "delete_fl")
+    private char isDeleted;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

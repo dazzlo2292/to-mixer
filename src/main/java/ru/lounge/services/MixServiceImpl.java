@@ -7,9 +7,11 @@ import ru.lounge.dto.MixDto;
 import ru.lounge.dto.TobaccoDto;
 import ru.lounge.exceptions.EntityNotFoundException;
 import ru.lounge.models.Mix;
+import ru.lounge.models.Tobacco;
 import ru.lounge.repositories.MixRepository;
 import ru.lounge.repositories.TobaccoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,13 +58,28 @@ public class MixServiceImpl implements MixService{
             }
         }
 
-        return mixRepository.save(mix.toDomainObject());
+        return mixRepository.save(convertMixDtoToDomain(mix));
     }
 
     @Transactional
     @Override
     public void deleteById(long id) {
         mixRepository.deleteById(id);
+    }
+
+    private Mix convertMixDtoToDomain(MixDto mixDto) {
+        List<Tobacco> mixTobaccos = new ArrayList<>();
+
+        for (TobaccoDto t : mixDto.getTobaccos()) {
+            tobaccoRepository.findById(t.getId()).ifPresent(mixTobaccos::add);
+        }
+
+        return new Mix(
+                mixDto.getId(),
+                mixDto.getName(),
+                'N',
+                mixTobaccos
+        );
     }
 }
 

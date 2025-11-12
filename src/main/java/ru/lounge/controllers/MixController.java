@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.lounge.dto.MixDto;
 import ru.lounge.exceptions.EntityNotFoundException;
-import ru.lounge.models.Mix;
 import ru.lounge.services.MixService;
 
 import java.util.List;
@@ -37,9 +36,9 @@ public class MixController {
     }
 
     @PostMapping("/api/v1/admin/mixes")
-    public Mix save(@RequestBody MixDto mix) {
+    public MixDto save(@RequestBody MixDto mix) {
         logger.info("Method called - POST /api/v1/admin/mixes with param:{}", mix);
-        return mixService.save(mix);
+        return MixDto.fromDomainObject(mixService.save(mix));
     }
 
     @DeleteMapping("/api/v1/admin/mixes/{id}")

@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lounge.dto.BrandDto;
 import ru.lounge.models.Brand;
+import ru.lounge.models.Tobacco;
 import ru.lounge.repositories.BrandRepository;
+import ru.lounge.repositories.TobaccoRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService{
     private final BrandRepository brandRepository;
+
+    private final TobaccoRepository tobaccoRepository;
+
+    private final TobaccoService tobaccoService;
 
     @Transactional(readOnly = true)
     @Override
@@ -34,12 +40,24 @@ public class BrandServiceImpl implements BrandService{
     @Transactional
     @Override
     public Brand save(BrandDto brand) {
-        return brandRepository.save(brand.toDomainObject('N'));
+        return brandRepository.save(
+                new Brand(
+                        brand.getId(),
+                        brand.getName(),
+                        'N'
+                )
+        );
     }
 
     @Transactional
     @Override
     public void deleteById(long id) {
+        List<Tobacco> tobaccosByBrand = tobaccoRepository.findByBrandId(id);
+
+        for (Tobacco t : tobaccosByBrand) {
+            tobaccoService.deleteById(t.getId());
+        }
+
         brandRepository.deleteById(id);
     }
 }

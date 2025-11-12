@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.lounge.dto.TobaccoDto;
 import ru.lounge.exceptions.EntityNotFoundException;
-import ru.lounge.models.Tobacco;
 import ru.lounge.services.TobaccoService;
 
 import java.util.List;
@@ -43,9 +42,9 @@ public class TobaccoController {
     }
 
     @PostMapping("/api/v1/admin/tobaccos")
-    public Tobacco save(@RequestBody TobaccoDto tobacco) {
+    public TobaccoDto save(@RequestBody TobaccoDto tobacco) {
         logger.info("Method called - POST /api/v1/admin/tobaccos with param:{}", tobacco);
-        return tobaccoService.save(tobacco);
+        return TobaccoDto.fromDomainObject(tobaccoService.save(tobacco));
     }
 
     @DeleteMapping("/api/v1/admin/tobaccos/{id}")

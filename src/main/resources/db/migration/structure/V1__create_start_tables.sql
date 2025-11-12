@@ -33,6 +33,7 @@ create table tobaccos (
 create table mixes (
     id bigserial,
     name varchar(100),
+    delete_fl varchar(1) default 'N',
     primary key (id)
 );
 

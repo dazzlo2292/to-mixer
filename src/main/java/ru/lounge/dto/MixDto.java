@@ -15,16 +15,6 @@ public class MixDto {
 
     private List<TobaccoDto> tobaccos;
 
-    public Mix toDomainObject() {
-        return new Mix(
-                id,
-                name,
-                tobaccos.stream()
-                        .map(TobaccoDto::toDomainObject)
-                        .toList()
-        );
-    }
-
     public static MixDto fromDomainObject(Mix mix) {
         return new MixDto(
                 mix.getId(),

@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "tobaccos")
 @NamedEntityGraph(
-        name = "tobacco-brand-mixes-entity-graph",
+        name = "tobacco.with-brand-and-mixes",
         attributeNodes = {
                 @NamedAttributeNode("brand"),
                 @NamedAttributeNode("mixes")
