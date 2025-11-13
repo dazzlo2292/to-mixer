@@ -13,7 +13,6 @@ import ru.lounge.repositories.TobaccoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +24,10 @@ public class MixServiceImpl implements MixService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<MixDto> findById(long id) {
-        return mixRepository.findById(id)
-                .map(MixDto::fromDomainObject);
+    public MixDto findById(long id) {
+        Mix targetMix = mixRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Mix with id %d not found".formatted(id)));
+        return MixDto.fromDomainObject(targetMix);
     }
 
     @Transactional(readOnly = true)
@@ -58,7 +58,7 @@ public class MixServiceImpl implements MixService{
             }
         }
 
-        return mixRepository.save(convertMixDtoToDomain(mix));
+        return mixRepository.save(convertMixDtoToDomain(mix, 'N'));
     }
 
     @Transactional
@@ -67,7 +67,7 @@ public class MixServiceImpl implements MixService{
         mixRepository.deleteById(id);
     }
 
-    private Mix convertMixDtoToDomain(MixDto mixDto) {
+    private Mix convertMixDtoToDomain(MixDto mixDto, char isDeleted) {
         List<Tobacco> mixTobaccos = new ArrayList<>();
 
         for (TobaccoDto t : mixDto.getTobaccos()) {
@@ -77,7 +77,7 @@ public class MixServiceImpl implements MixService{
         return new Mix(
                 mixDto.getId(),
                 mixDto.getName(),
-                'N',
+                isDeleted,
                 mixTobaccos
         );
     }

@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.lounge.dto.MixDto;
-import ru.lounge.exceptions.EntityNotFoundException;
 import ru.lounge.services.MixService;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class MixController {
     @GetMapping("/api/v1/public/mixes/{id}")
     public MixDto findById(@PathVariable Long id) {
         logger.info("Method called - GET /api/v1/public/mixes/ with params: {}", id);
-        return mixService.findById(id).orElseThrow(() -> new EntityNotFoundException("Mix not found!"));
+        return mixService.findById(id);
     }
 
     @GetMapping("/api/v1/public/mixes/tobacco/{id}")

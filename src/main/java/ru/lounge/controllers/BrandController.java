@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.lounge.dto.BrandDto;
-import ru.lounge.exceptions.EntityNotFoundException;
 import ru.lounge.models.Brand;
 import ru.lounge.services.BrandService;
 
@@ -28,8 +27,7 @@ public class BrandController {
     @GetMapping("/api/v1/public/brands/{id}")
     public BrandDto findById(@PathVariable Long id) {
         logger.info("Method called - GET /api/v1/public/brands/ with params: {}", id);
-        return brandService.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Brand with id %d not found".formatted(id)));
+        return brandService.findById(id);
     }
 
     @PostMapping("/api/v1/admin/brands")

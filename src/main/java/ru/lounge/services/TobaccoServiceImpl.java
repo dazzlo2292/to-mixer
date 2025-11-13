@@ -15,7 +15,6 @@ import ru.lounge.repositories.TobaccoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +29,10 @@ public class TobaccoServiceImpl implements TobaccoService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<TobaccoDto> findById(long id) {
-        return tobaccoRepository.findById(id)
-                .map(TobaccoDto::fromDomainObject);
+    public TobaccoDto findById(long id) {
+        Tobacco targetTobacco = tobaccoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tobacco with id %d not found".formatted(id)));
+        return TobaccoDto.fromDomainObject(targetTobacco);
     }
 
     @Transactional(readOnly = true)
@@ -79,7 +79,7 @@ public class TobaccoServiceImpl implements TobaccoService {
             throw new ValidationException("The strength of tobacco should be from 1 to 10");
         }
 
-        return tobaccoRepository.save(convertTobaccoDtoToDomain(tobacco));
+        return tobaccoRepository.save(convertTobaccoDtoToDomain(tobacco, 'N'));
     }
 
     @Transactional
@@ -94,7 +94,7 @@ public class TobaccoServiceImpl implements TobaccoService {
         tobaccoRepository.deleteById(id);
     }
 
-    private Tobacco convertTobaccoDtoToDomain(TobaccoDto tobaccoDto) {
+    private Tobacco convertTobaccoDtoToDomain(TobaccoDto tobaccoDto, char isDeleted) {
         List<Mix> mixes = mixRepository.findByTobaccoId(tobaccoDto.getId());
 
         Brand brand = brandRepository.findById(tobaccoDto.getBrand().getId()).get();
@@ -106,7 +106,7 @@ public class TobaccoServiceImpl implements TobaccoService {
                 brand,
                 tobaccoDto.getStrength(),
                 tobaccoDto.getIsBase(),
-                'N',
+                isDeleted,
                 mixes
         );
     }

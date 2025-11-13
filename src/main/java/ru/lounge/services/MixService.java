@@ -4,10 +4,9 @@ import ru.lounge.dto.MixDto;
 import ru.lounge.models.Mix;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MixService {
-    Optional<MixDto> findById(long id);
+    MixDto findById(long id);
 
     List<MixDto> findAll();
 

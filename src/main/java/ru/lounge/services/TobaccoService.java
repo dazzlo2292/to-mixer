@@ -5,10 +5,9 @@ import ru.lounge.dto.TobaccoDto;
 import ru.lounge.models.Tobacco;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TobaccoService {
-    Optional<TobaccoDto> findById(long id);
+    TobaccoDto findById(long id);
 
     List<TobaccoDto> findByBrandId(long id);
 

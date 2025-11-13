@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.lounge.dto.TobaccoDto;
-import ru.lounge.exceptions.EntityNotFoundException;
 import ru.lounge.services.TobaccoService;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class TobaccoController {
     @GetMapping("/api/v1/public/tobaccos/{id}")
     public TobaccoDto findById(@PathVariable Long id) {
         logger.info("Method called - GET /api/v1/public/tobaccos/ with params: {}", id);
-        return tobaccoService.findById(id).orElseThrow(() -> new EntityNotFoundException("Tobacco not found!"));
+        return tobaccoService.findById(id);
     }
 
     @GetMapping("/api/v1/public/tobaccos/brand/{id}")

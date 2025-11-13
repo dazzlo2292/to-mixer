@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lounge.dto.BrandDto;
+import ru.lounge.exceptions.EntityNotFoundException;
 import ru.lounge.models.Brand;
 import ru.lounge.models.Tobacco;
 import ru.lounge.repositories.BrandRepository;
 import ru.lounge.repositories.TobaccoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +23,10 @@ public class BrandServiceImpl implements BrandService{
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<BrandDto> findById(long id) {
-        return brandRepository.findById(id)
-                .map(BrandDto::fromDomainObject);
+    public BrandDto findById(long id) {
+        Brand targetBrand = brandRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Brand with id %d not found".formatted(id)));
+        return BrandDto.fromDomainObject(targetBrand);
     }
 
     @Transactional(readOnly = true)

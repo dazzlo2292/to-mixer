@@ -42,3 +42,13 @@ create table mixes_tobaccos (
     tobacco_id bigserial,
     primary key (mix_id, tobacco_id)
 );
+
+create table coupons (
+    id bigserial,
+    phone varchar(11),
+    code varchar(6),
+    status varchar(10),
+    created_at timestamp default CURRENT_TIMESTAMP,
+    expiration_at timestamp,
+    primary key (id)
+);
