@@ -36,7 +36,7 @@ public class CouponController {
     @PostMapping("/api/v1/admin/coupons")
     public Coupon save(@RequestBody PhoneDto phone) {
         logger.info("Method called - POST /api/v1/admin/coupons");
-        return couponService.save(phone);
+        return couponService.createCoupon(phone);
     }
 
     @PutMapping("/api/v1/admin/coupons/activate/{id}")

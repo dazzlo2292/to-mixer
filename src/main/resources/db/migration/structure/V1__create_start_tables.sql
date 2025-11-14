@@ -48,6 +48,7 @@ create table coupons (
     phone varchar(11),
     code varchar(6),
     status varchar(10),
+    bonus varchar(20),
     created_at timestamp default CURRENT_TIMESTAMP,
     expiration_at timestamp,
     primary key (id)

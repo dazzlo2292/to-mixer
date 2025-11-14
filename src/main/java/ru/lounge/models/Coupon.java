@@ -26,6 +26,9 @@ public class Coupon {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "bonus")
+    private String bonus;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

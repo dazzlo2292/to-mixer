@@ -17,6 +17,8 @@ public class CouponDto {
 
     private String status;
 
+    private String bonus;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime expirationAt;
@@ -27,6 +29,7 @@ public class CouponDto {
                 phone,
                 code,
                 status,
+                bonus,
                 createdAt,
                 expirationAt
         );
@@ -38,6 +41,7 @@ public class CouponDto {
                 coupon.getPhone(),
                 coupon.getCode(),
                 coupon.getStatus(),
+                coupon.getBonus(),
                 coupon.getCreatedAt(),
                 coupon.getExpirationAt());
     }

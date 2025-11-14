@@ -4,7 +4,7 @@ import ru.lounge.dto.CouponDto;
 import ru.lounge.dto.PhoneDto;
 import ru.lounge.models.Coupon;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CouponService {
@@ -12,9 +12,11 @@ public interface CouponService {
 
     List<CouponDto> findAll();
 
-    List<CouponDto> findAllByExpirationAt(Date expirationAt);
+    List<CouponDto> findAllByExpirationAt(LocalDateTime expirationAt);
 
-    Coupon save(PhoneDto phone);
+    Coupon createCoupon(PhoneDto phone);
 
     Coupon activate(long id);
+
+    Coupon save(CouponDto couponDto);
 }

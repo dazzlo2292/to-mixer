@@ -10,16 +10,17 @@ import ru.lounge.exceptions.EntityNotFoundException;
 import ru.lounge.models.Coupon;
 import ru.lounge.models.CouponStatus;
 import ru.lounge.repositories.CouponRepository;
+import ru.lounge.utils.GeneratorUtil;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
 public class CouponServiceImpl implements CouponService{
     private final CouponRepository couponRepository;
+
+    private final GeneratorUtil generatorUtil;
 
     @Transactional(readOnly = true)
     @Override
@@ -40,7 +41,7 @@ public class CouponServiceImpl implements CouponService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<CouponDto> findAllByExpirationAt(Date expirationAt) {
+    public List<CouponDto> findAllByExpirationAt(LocalDateTime expirationAt) {
         return couponRepository.findAllByExpirationAt(expirationAt).stream()
                 .map(CouponDto::fromDomainObject)
                 .toList();
@@ -48,7 +49,7 @@ public class CouponServiceImpl implements CouponService{
 
     @Transactional
     @Override
-    public Coupon save(PhoneDto phone) {
+    public Coupon createCoupon(PhoneDto phone) {
         if (phone.getPhone().length() != 11) {
             throw new BusinessLogicException("The phone number must be 11 characters long!");
         }
@@ -57,8 +58,9 @@ public class CouponServiceImpl implements CouponService{
                 new Coupon(
                     null,
                     phone.getPhone(),
-                    generateCode(),
+                    generatorUtil.generateCode(),
                     CouponStatus.CREATED.name(),
+                    generatorUtil.generateBonus(),
                     LocalDateTime.now(),
                     LocalDateTime.now().plusDays(7)
                 )
@@ -67,25 +69,21 @@ public class CouponServiceImpl implements CouponService{
 
     @Transactional
     @Override
+    public Coupon save(CouponDto couponDto) {
+        return couponRepository.save(couponDto.toDomainObject());
+    }
+
+    @Transactional
+    @Override
     public Coupon activate(long id) {
         Coupon currentCoupon = couponRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Coupon with id %d not found".formatted(id)));
-        currentCoupon.setStatus(CouponStatus.ACTIVATED.name());
-        return couponRepository.save(currentCoupon);
-    }
 
-    private String generateCode() {
-        Random random = new Random();
-        StringBuilder stringBuilder = new StringBuilder(6);
-
-        for (int i = 0; i < 6; i++) {
-            if (i % 2 == 0) {
-                stringBuilder.append(random.nextInt(10));
-                continue;
-            }
-            stringBuilder.append((char) (random.nextInt(26) + 'A'));
+        if (currentCoupon.getStatus().equals(CouponStatus.CREATED.name())) {
+            currentCoupon.setStatus(CouponStatus.ACTIVATED.name());
+            return couponRepository.save(currentCoupon);
         }
 
-        return stringBuilder.toString();
+        throw new BusinessLogicException("Coupon already ACTIVATED or EXPIRED!");
     }
 }
