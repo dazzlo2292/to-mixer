@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.lounge.dto.MixDto;
+import ru.lounge.models.Mix;
 import ru.lounge.services.MixService;
 
 import java.util.List;
@@ -37,12 +38,24 @@ public class MixController {
     @PostMapping("/api/v1/admin/mixes")
     public MixDto save(@RequestBody MixDto mix) {
         logger.info("Method called - POST /api/v1/admin/mixes with param:{}", mix);
-        return MixDto.fromDomainObject(mixService.save(mix));
+        return mixService.save(mix);
     }
 
     @DeleteMapping("/api/v1/admin/mixes/{id}")
     public void delete(@PathVariable Long id) {
         logger.info("Method called - DELETE /api/v1/admin/mixes with param:{}", id);
         mixService.deleteById(id);
+    }
+
+    @PatchMapping("/api/v1/public/mixes/{id}/like")
+    public MixDto like(@PathVariable Long id) {
+        logger.info("Method called - PATCH /api/v1/public/mixes/id/like with param:{}", id);
+        return mixService.like(id);
+    }
+
+    @PatchMapping("/api/v1/public/mixes/{id}/dislike")
+    public MixDto dislike(@PathVariable Long id) {
+        logger.info("Method called - PATCH /api/v1/public/mixes/id/dislike with param:{}", id);
+        return mixService.dislike(id);
     }
 }

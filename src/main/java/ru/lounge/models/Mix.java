@@ -38,6 +38,12 @@ public class Mix {
     @Column(name = "delete_fl")
     private char isDeleted;
 
+    @Column(name = "likes")
+    private int likesCount;
+
+    @Column(name = "dislikes")
+    private int dislikesCount;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "mixes_tobaccos",

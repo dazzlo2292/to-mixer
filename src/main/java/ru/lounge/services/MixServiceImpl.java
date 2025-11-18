@@ -49,7 +49,7 @@ public class MixServiceImpl implements MixService{
 
     @Transactional
     @Override
-    public Mix save(MixDto mix) {
+    public MixDto save(MixDto mix) {
         List<TobaccoDto> tobaccosInMix = mix.getTobaccos();
 
         for (TobaccoDto t : tobaccosInMix) {
@@ -58,13 +58,27 @@ public class MixServiceImpl implements MixService{
             }
         }
 
-        return mixRepository.save(convertMixDtoToDomain(mix, 'N'));
+        return MixDto.fromDomainObject(mixRepository.save(convertMixDtoToDomain(mix, 'N')));
     }
 
     @Transactional
     @Override
     public void deleteById(long id) {
         mixRepository.deleteById(id);
+    }
+
+    @Override
+    public MixDto like(long id) {
+        MixDto targetMix = findById(id);
+        targetMix.setLikesCount(targetMix.getLikesCount() + 1);
+        return save(targetMix);
+    }
+
+    @Override
+    public MixDto dislike(long id) {
+        MixDto targetMix = findById(id);
+        targetMix.setDislikesCount(targetMix.getDislikesCount() + 1);
+        return save(targetMix);
     }
 
     private Mix convertMixDtoToDomain(MixDto mixDto, char isDeleted) {
@@ -78,6 +92,8 @@ public class MixServiceImpl implements MixService{
                 mixDto.getId(),
                 mixDto.getName(),
                 isDeleted,
+                mixDto.getLikesCount(),
+                mixDto.getDislikesCount(),
                 mixTobaccos
         );
     }

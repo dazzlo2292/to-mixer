@@ -15,6 +15,8 @@ public interface MixRepository extends JpaRepository<Mix, Long> {
     @Override
     @NonNull
     @EntityGraph(value = "mixes.with-tobaccos-and-brand")
+    @Query("SELECT m FROM Mix m WHERE m.isDeleted = 'N'" +
+            "ORDER BY (m.likesCount - m.dislikesCount) DESC")
     List<Mix> findAll();
 
     @EntityGraph(value = "mixes.with-tobaccos-and-brand")

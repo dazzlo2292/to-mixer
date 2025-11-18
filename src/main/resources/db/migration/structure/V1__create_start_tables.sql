@@ -34,6 +34,8 @@ create table mixes (
     id bigserial,
     name varchar(100),
     delete_fl varchar(1) default 'N',
+    likes int,
+    dislikes int,
     primary key (id)
 );
 

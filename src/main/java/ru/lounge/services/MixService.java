@@ -12,7 +12,11 @@ public interface MixService {
 
     List<MixDto> findByTobaccoId(long id);
 
-    Mix save(MixDto mix);
+    MixDto save(MixDto mix);
 
     void deleteById(long id);
+
+    MixDto like(long id);
+
+    MixDto dislike(long id);
 }

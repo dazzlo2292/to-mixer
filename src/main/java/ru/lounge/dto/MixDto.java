@@ -13,12 +13,18 @@ public class MixDto {
 
     private String name;
 
+    private int likesCount;
+
+    private int dislikesCount;
+
     private List<TobaccoDto> tobaccos;
 
     public static MixDto fromDomainObject(Mix mix) {
         return new MixDto(
                 mix.getId(),
                 mix.getName(),
+                mix.getLikesCount(),
+                mix.getDislikesCount(),
                 mix.getTobaccos().stream()
                         .map(TobaccoDto::fromDomainObject)
                         .toList()
