@@ -21,6 +21,10 @@ public interface TobaccoRepository extends JpaRepository<Tobacco, Long> {
     @Query("SELECT t FROM Tobacco t WHERE t.isDeleted = 'N' and t.brand.id = :id")
     List<Tobacco> findByBrandId(@Param("id") Long id);
 
+    @EntityGraph(value = "tobacco.with-brand-and-mixes")
+    @Query("SELECT t FROM Tobacco t WHERE t.isDeleted = 'N' and t.isBase = 'Y'")
+    List<Tobacco> findAllBased();
+
     @Override
     @NonNull
     @EntityGraph(value = "tobacco.with-brand-and-mixes")

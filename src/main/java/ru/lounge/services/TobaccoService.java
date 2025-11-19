@@ -11,6 +11,8 @@ public interface TobaccoService {
 
     List<TobaccoDto> findByBrandId(long id);
 
+    List<TobaccoDto> findAllBased();
+
     List<TobaccoDto> findAll();
 
     List<TobaccoDto> searchByName(String name);

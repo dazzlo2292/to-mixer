@@ -13,6 +13,8 @@ public class MixDto {
 
     private String name;
 
+    private char isMixOfDay;
+
     private int likesCount;
 
     private int dislikesCount;
@@ -23,6 +25,7 @@ public class MixDto {
         return new MixDto(
                 mix.getId(),
                 mix.getName(),
+                mix.getIsMixOfDay(),
                 mix.getLikesCount(),
                 mix.getDislikesCount(),
                 mix.getTobaccos().stream()

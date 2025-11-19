@@ -1,12 +1,13 @@
 package ru.lounge.services;
 
 import ru.lounge.dto.MixDto;
-import ru.lounge.models.Mix;
 
 import java.util.List;
 
 public interface MixService {
     MixDto findById(long id);
+
+    MixDto findMixOfDay();
 
     List<MixDto> findAll();
 
@@ -19,4 +20,8 @@ public interface MixService {
     MixDto like(long id);
 
     MixDto dislike(long id);
+
+    void clearPreviousMixOfDay();
+
+    void setMixOfDayFlag(long id);
 }

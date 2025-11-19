@@ -38,6 +38,9 @@ public class Mix {
     @Column(name = "delete_fl")
     private char isDeleted;
 
+    @Column(name = "day_fl")
+    private char isMixOfDay;
+
     @Column(name = "likes")
     private int likesCount;
 

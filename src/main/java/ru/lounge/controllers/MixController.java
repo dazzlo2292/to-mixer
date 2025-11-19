@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.lounge.dto.MixDto;
-import ru.lounge.models.Mix;
 import ru.lounge.services.MixService;
 
 import java.util.List;
@@ -29,6 +28,12 @@ public class MixController {
         return mixService.findById(id);
     }
 
+    @GetMapping("/api/v1/public/mixes/day")
+    public MixDto findMixOfDay() {
+        logger.info("Method called - GET /api/v1/public/mixes/day");
+        return mixService.findMixOfDay();
+    }
+
     @GetMapping("/api/v1/public/mixes/tobacco/{id}")
     public List<MixDto> findByTobaccoId(@PathVariable Long id) {
         logger.info("Method called - GET /api/v1/public/mixes/tobacco/ with params: {}", id);
@@ -38,6 +43,9 @@ public class MixController {
     @PostMapping("/api/v1/admin/mixes")
     public MixDto save(@RequestBody MixDto mix) {
         logger.info("Method called - POST /api/v1/admin/mixes with param:{}", mix);
+        mix.setIsMixOfDay('N');
+        mix.setLikesCount(0);
+        mix.setDislikesCount(0);
         return mixService.save(mix);
     }
 

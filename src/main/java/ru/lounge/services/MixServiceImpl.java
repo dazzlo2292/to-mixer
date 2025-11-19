@@ -32,6 +32,14 @@ public class MixServiceImpl implements MixService{
 
     @Transactional(readOnly = true)
     @Override
+    public MixDto findMixOfDay() {
+        Mix targetMix = mixRepository.findMixOfDay()
+                .orElseThrow(() -> new EntityNotFoundException("Mix of Day not found!"));
+        return MixDto.fromDomainObject(targetMix);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<MixDto> findByTobaccoId(long id) {
         return mixRepository.findByTobaccoId(id).stream()
                 .map(MixDto::fromDomainObject)
@@ -67,6 +75,7 @@ public class MixServiceImpl implements MixService{
         mixRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public MixDto like(long id) {
         MixDto targetMix = findById(id);
@@ -74,11 +83,24 @@ public class MixServiceImpl implements MixService{
         return save(targetMix);
     }
 
+    @Transactional
     @Override
     public MixDto dislike(long id) {
         MixDto targetMix = findById(id);
         targetMix.setDislikesCount(targetMix.getDislikesCount() + 1);
         return save(targetMix);
+    }
+
+    @Transactional
+    @Override
+    public void clearPreviousMixOfDay() {
+        mixRepository.clearPreviousMixOfDay();
+    }
+
+    @Transactional
+    @Override
+    public void setMixOfDayFlag(long id) {
+        mixRepository.setAsMixOfDay(id);
     }
 
     private Mix convertMixDtoToDomain(MixDto mixDto, char isDeleted) {
@@ -92,6 +114,7 @@ public class MixServiceImpl implements MixService{
                 mixDto.getId(),
                 mixDto.getName(),
                 isDeleted,
+                mixDto.getIsMixOfDay(),
                 mixDto.getLikesCount(),
                 mixDto.getDislikesCount(),
                 mixTobaccos

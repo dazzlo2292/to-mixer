@@ -46,6 +46,15 @@ public class TobaccoServiceImpl implements TobaccoService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<TobaccoDto> findAllBased() {
+        return tobaccoRepository.findAllBased()
+                .stream()
+                .map(TobaccoDto::fromDomainObject)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<TobaccoDto> searchByName(String name) {
         List<Tobacco> allTobaccos = tobaccoRepository.findAll();
         List<TobaccoDto> resultTobaccos = new ArrayList<>();
