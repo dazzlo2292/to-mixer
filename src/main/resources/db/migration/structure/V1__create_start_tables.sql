@@ -41,8 +41,8 @@ create table mixes (
 );
 
 create table mixes_tobaccos (
-    mix_id bigserial,
-    tobacco_id bigserial,
+    mix_id bigserial references mixes (id),
+    tobacco_id bigserial references tobaccos (id),
     primary key (mix_id, tobacco_id)
 );
 
