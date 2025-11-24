@@ -24,9 +24,6 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-  data:
-    rest:
-      basePath: /datarest
 
   jackson:
     serialization:
